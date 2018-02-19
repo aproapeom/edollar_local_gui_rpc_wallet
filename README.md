@@ -6,10 +6,10 @@ How to use :
 
 Copy the files to your edollar folder - run start_wallet.bat, wait for the daemon to sync with the network.
 
-Start_wallet.bat will start : 
-edollar daemon
-edollar rpc daemon
-chrome with websecurity off - IT IS NOT SAFE TO USE THIS INSTANCE OF CHROME FOR BROWSING THE INTERNET 
+Start_wallet.bat will start :<br> 
+edollar daemon<br>
+edollar rpc daemon<br>
+chrome with websecurity off - IT IS NOT SAFE TO USE THIS INSTANCE OF CHROME FOR BROWSING THE INTERNET <br>
 
 If you already have a cli-wallet, copy the 3 wallet files to /wallets folder to use it.
 It works on WINDOWS ONLY and needs Chrome to be installed. 
