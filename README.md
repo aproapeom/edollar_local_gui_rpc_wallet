@@ -19,3 +19,12 @@ If Windows asks you about network permission for edollard.exe and edollar-wallet
 This wallet is a wrapper for the existing commands in the rpc daemon. 
 
 After you make a payment, wait at least 2-3 blocks for the balance to get updated.
+
+Screenshots:
+
+![screen1](screens/1.PNG)<br>
+![screen2](screens/2.PNG)<br>
+![screen3](screens/3.PNG)<br>
+![screen4](screens/4.PNG)<br>
+![screen5](screens/5.PNG)<br>
+![screen6](screens/6.PNG)<br>
