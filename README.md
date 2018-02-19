@@ -11,7 +11,7 @@ edollar daemon
 edollar rpc daemon
 chrome with websecurity off - DO NOT USE THIS INSTANCE OF THE BROWSER FOR BROWSING THE INTERNET
 
-
+If you already have a cli-wallet, copy the 3 wallet files to /wallets folder to use it.
 It works on WINDOWS ONLY and needs Chrome to be installed. 
 
 If Windows asks you about network permission for edollard.exe and edollar-wallet-rpc.exe, grant them.
