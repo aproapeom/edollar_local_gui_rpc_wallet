@@ -11,7 +11,12 @@ edollar daemon<br>
 edollar rpc daemon<br>
 chrome with websecurity off - IT IS NOT SAFE TO USE THIS INSTANCE OF CHROME FOR BROWSING THE INTERNET <br>
 
-If you already have a cli-wallet, copy the 3 wallet files to /wallets folder to use it.
+<strong>If you already have a cli-wallet, copy the 3 wallet files to /wallets folder to use it.</strong><br>
+By 3 wallet files I mean : there must be 3 different files that contain your wallet filename :<br>
+mywallet<br>
+mywallet.address.txt<br>
+mywallet.keys<br>
+<br>
 The start_wallet script works on WINDOWS ONLY and needs Chrome to be installed. 
 
 If Windows asks you about network permission for edollard.exe and edollar-wallet-rpc.exe, grant them.
