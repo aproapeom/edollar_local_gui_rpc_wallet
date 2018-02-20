@@ -1,4 +1,5 @@
 //version 1
+//version 1.01 - added restore address book and rescan wallet when clicking on refresh balance
 var server_address = "127.0.0.1:8888";
 var wallet_url = "http://" + server_address + "/json_rpc";
 var node_server_address = "127.0.0.1:33031";
@@ -6,6 +7,7 @@ var node_close_url = "http://" + node_server_address + "/stop_daemon";
 var close_wallet_ok = false;
 var close_node_ok = false;
 var block_height = null;
+var temp_address_book = null;
 
 
 /* OPEN WALLET */
@@ -364,7 +366,7 @@ function show_address_book() {
         data: '{"jsonrpc":"2.0","id":"0","method":"get_address_book","params":{"entries":[]}}',
         success: function(data) {
             $("#no-address-book-alert").hide();
-            console.log(data);
+            //console.log(data);
             if (data.result.entries) {
                 $.fn.dataTable.render.edlvalue = function(cutoff) {
                     return function(data, type, row) {
@@ -408,9 +410,44 @@ function show_address_book() {
 }
 
 
-function add_to_address_book() {
-    var entry_address = $("#entry_address").val();
-    var entry_description = $("#entry_description").val();
+
+function get_address_book() {
+	var dummy = 1;
+     return $.ajax({
+        url: wallet_url,
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        processData: false,
+        crossDomain: true,
+        data: '{"jsonrpc":"2.0","id":"0","method":"get_address_book","params":{"entries":[]}}',
+        success: function(data) {
+            if (data.result.entries) {
+			if (data.result.entries.length > 0 ){
+				temp_address_book = data.result.entries;
+				}
+				return temp_address_book;
+			}
+        },
+        error: function() {
+            console.log("error show wallet address");
+			return dummy;
+        }
+    });
+}
+
+
+function add_to_address_book(someaddress) {
+	var entry_address;
+	var entry_description;
+	if (someaddress){
+		entry_address = someaddress.address;
+		entry_description = someaddress.description;
+	}
+	else {
+    entry_address = $("#entry_address").val();
+    entry_description = $("#entry_description").val();
+	}
     if ((entry_address.length > 0) && (entry_description.length > 0)) {
         $.ajax({
             url: wallet_url,
@@ -433,6 +470,8 @@ function add_to_address_book() {
     } //if end
 
 }
+
+
 $("#refresh-book-button").click(function() {
     show_address_book();
 });
@@ -477,7 +516,9 @@ function show_top_balance() {
 }
 
 function rescan_blockchain() {
-    $.ajax({
+   get_address_book().then(
+   function(result){ 
+   $.ajax({
         url: wallet_url,
         type: 'POST',
         dataType: 'json',
@@ -489,15 +530,22 @@ function rescan_blockchain() {
             spinner_available_balance("spin");
         },
         success: function(data) {
-            // temp_data = data;
             show_top_balance();
             spinner_available_balance();
         },
         error: function() {
-            console.log(JSON.stringify(data));
-        }
-    });
+			console.log("error rescanning");
+        },
+		complete: function(){
+			//restore the address book to the wallet
+			result.result.entries.forEach(function(element){
+				add_to_address_book(element);
+				});
+		}});}
+   );//then
 }
+
+
 
 function get_height() {
     $.ajax({
@@ -523,7 +571,6 @@ function get_height() {
 
 function show_top_height(){
 	$("#top-wallet-height").text(block_height);
-	
 }
 
 
@@ -531,7 +578,7 @@ function show_top_height(){
 
 
 function close_broswer() {
-    console.log("closing");
+    //console.log("closing");
     if (close_wallet_ok && close_node_ok) {
         window.close();
     }
@@ -539,9 +586,7 @@ function close_broswer() {
 
 
 function close_wallet() {
-
-    //close wallet
-    console.log("close wallet");
+    //console.log("close wallet");
     $.ajax({
         url: wallet_url,
         type: 'POST',
@@ -556,8 +601,7 @@ function close_wallet() {
         error: function() {}
     });
 
-    //close daemon http://127.0.0.1:33031/stop_daemon
-    console.log("close node");
+    //console.log("close node");
     $.ajax({
         url: node_close_url,
         type: 'POST',
@@ -572,8 +616,6 @@ function close_wallet() {
         error: function(data) {}
     });
     setInterval(close_broswer, 1000);
-
-
 }
 
 $("#modal-close-wallet").click(function() {
@@ -627,8 +669,8 @@ $("#send-cash-button").click(function() {
     send_cash();
 });
 $("#refresh_balance").click(function() {
-    //rescan_blockchain();
-	show_top_balance();
+    rescan_blockchain();
+	//show_top_balance();
 });
 
 
