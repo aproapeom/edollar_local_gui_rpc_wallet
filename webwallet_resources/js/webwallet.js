@@ -538,9 +538,11 @@ function rescan_blockchain() {
         },
 		complete: function(){
 			//restore the address book to the wallet
-			result.result.entries.forEach(function(element){
+			if (result.result.entries){
+				result.result.entries.forEach(function(element){
 				add_to_address_book(element);
 				});
+			}
 		}});}
    );//then
 }
